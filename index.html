@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lost KRA Pin Application</title>
+<title>KRA Application</title>
 
 <style>
 body { 
@@ -21,7 +21,6 @@ body {
   box-shadow:0 8px 30px rgba(0,0,0,0.08); 
   border-top:5px solid #10b981; 
 }
-
 .header { text-align:center; margin-bottom:30px; }
 .icon { 
   width:65px; height:65px; background:#10b981; border-radius:50%; 
@@ -31,8 +30,8 @@ body {
 h1 { color:#059669; margin-top:15px; }
 .sub { color:#6b7280; font-size:14px; }
 
-.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-@media(max-width:768px){ .grid{grid-template-columns:1fr;} }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:15px; }
+@media(max-width:768px) { .grid { grid-template-columns:1fr; } }
 
 .field { display:flex; flex-direction:column; }
 label { font-size:13px; font-weight:600; margin-bottom:6px; }
@@ -40,20 +39,21 @@ label { font-size:13px; font-weight:600; margin-bottom:6px; }
 input, select { 
   padding:14px; border-radius:10px; border:1px solid #d1d5db; outline:none; 
 }
+input:focus, select:focus { 
+  border-color:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,0.2); 
+}
 
 button { 
   margin-top:25px; width:100%; padding:15px; background:#10b981; color:white; 
   border:none; border-radius:10px; font-size:16px; cursor:pointer; 
 }
 button:hover { background:#059669; }
-button:disabled { background:#9ca3af; }
 
 .screen { display:none; }
 .active { display:block; }
 
 #status { margin-top:15px; text-align:center; font-weight:bold; }
 
-/* Spinner */
 .spinner { 
   display:none; width:50px; height:50px; border:5px solid #f3f3f3; 
   border-top:5px solid #10b981; border-radius:50%; animation:spin 1s linear infinite; 
@@ -63,34 +63,13 @@ button:disabled { background:#9ca3af; }
 
 .mpesa-logo { width:100px; margin:20px auto; display:block; }
 
-/* Consent */
-.consent { margin-top:20px; }
-.checkbox-wrapper{
-  display:flex; gap:10px; font-size:14px; color:#374151;
-}
-.checkbox-wrapper input{
-  width:18px; height:18px; accent-color:#10b981;
-}
-.checkbox-wrapper a{
-  color:#10b981; text-decoration:none; font-weight:600;
-}
-
-/* Success Modal */
 .success-modal {
-  position: fixed;
-  top:0; left:0; width:100%; height:100%;
+  position: fixed; top:0; left:0; width:100%; height:100%;
   background:rgba(0,0,0,0.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
+  display:none; align-items:center; justify-content:center;
 }
-
 .success-content {
-  background:white;
-  padding:40px;
-  border-radius:20px;
-  text-align:center;
-  max-width:420px;
+  background:white; padding:40px; border-radius:20px; text-align:center;
 }
 </style>
 </head>
@@ -101,57 +80,61 @@ button:disabled { background:#9ca3af; }
 
 <!-- FORM -->
 <div id="formScreen" class="screen active">
-  <div class="header">
-    <div class="icon">👤</div>
-    <h1>Lost KRA Pin Application</h1>
-    <div class="sub">Fill required details</div>
-  </div>
-
-  <form id="form">
-    <div class="grid">
-      <div class="field">
-        <label>Full Names *</label>
-        <input name="Full Names" required>
-      </div>
-
-      <div class="field">
-        <label>ID Number *</label>
-        <input name="ID Number" required>
-      </div>
-
-      <div class="field">
-        <label>Phone Number *</label>
-        <input name="Phone Number" required>
-      </div>
-
-      <div class="field">
-        <label>Delivery Method *</label>
-        <select name="Preferred Delivery Method" required>
-          <option value="">Select</option>
-          <option>WhatsApp</option>
-          <option>Email</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- CONSENT -->
-    <div class="consent">
-      <label class="checkbox-wrapper">
-        <input type="checkbox" id="consent" required>
-        <span>
-          I confirm that I have read, understood, and agree to the 
-          <a href="https://www.onlinecyber.co.ke/data-protection" target="_blank">
-            Data Protection & Privacy Policy
-          </a> and consent to the processing of my data.
-        </span>
-      </label>
-    </div>
-
-    <button type="submit">Proceed to Payment</button>
-  </form>
+<div class="header">
+  <div class="icon">👤</div>
+  <h1>KRA Application Form</h1>
+  <div class="sub">Fill details to proceed</div>
 </div>
 
-<!-- PAYMENT SCREEN -->
+<form id="form">
+<div class="grid">
+
+<div class="field">
+<label>Full Names *</label>
+<input name="Full Names" required>
+</div>
+
+<div class="field">
+<label>ID Number *</label>
+<input name="ID Number" required>
+</div>
+
+<div class="field">
+<label>Phone Number *</label>
+<input name="Phone Number" required>
+</div>
+
+<div class="field">
+<label>Email Address *</label>
+<input type="email" name="Active Email" required>
+</div>
+
+<div class="field">
+<label>Receive via *</label>
+<select name="Preferred Delivery Method" required>
+<option value="">Select</option>
+<option>WhatsApp</option>
+<option>Email</option>
+</select>
+</div>
+
+</div>
+
+<div style="margin-top:20px;">
+<label>
+<input type="checkbox" id="consent" required>
+ I confirm that I have read, understood, and agree to the 
+ <a href="https://www.onlinecyber.co.ke/data-protection" target="_blank">
+ Data Protection & Privacy Policy
+ </a> and consent to my data being processed.
+</label>
+</div>
+
+<button type="submit">Proceed to Payment</button>
+</form>
+</div>
+
+  <!-- PAYMENT SCREEN -->
   <div id="paymentScreen" class="screen">
     <div class="header">
       <div class="icon">💳</div>
@@ -191,7 +174,7 @@ button:disabled { background:#9ca3af; }
 
 <script>
 // ====================== CONFIG ======================
-const scriptURL = "https://script.google.com/macros/s/AKfycby9XXmpUY-KBoFRFl226BJiGOrGYEPEHjZ3Qs8hFhqHdVjuPTs601Ku4goqIKuyDqSCOA/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxukDLNV_aKGSdLaZVGhA6epqE8h7OLPNfCUQDMnJb6I7Lk49Ks3zIeiWJEyrDORF38hg/exec";
 
 let formDataStore = {};
 
