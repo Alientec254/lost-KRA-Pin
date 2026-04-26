@@ -6,10 +6,28 @@
 <title>KRA Application</title>
 
 <style>
-body { font-family:'Segoe UI',sans-serif; background:#f3f7f6; padding:20px; }
-.container { max-width:1000px; margin:auto; background:#fff; border-radius:20px; padding:35px; box-shadow:0 8px 30px rgba(0,0,0,0.08); border-top:5px solid #10b981; }
+body { 
+  font-family:'Segoe UI',sans-serif; 
+  background:#f3f7f6; 
+  padding:20px; 
+  margin:0;
+}
+.container { 
+  max-width:1000px; 
+  margin:auto; 
+  background:#fff; 
+  border-radius:20px; 
+  padding:35px; 
+  box-shadow:0 8px 30px rgba(0,0,0,0.08); 
+  border-top:5px solid #10b981; 
+}
+
 .header { text-align:center; margin-bottom:30px; }
-.icon { width:65px; height:65px; background:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:auto; color:white; font-size:26px; }
+.icon { 
+  width:65px; height:65px; background:#10b981; border-radius:50%; 
+  display:flex; align-items:center; justify-content:center; margin:auto; 
+  color:white; font-size:26px; 
+}
 h1 { color:#059669; margin-top:15px; }
 .sub { color:#6b7280; font-size:14px; }
 
@@ -22,10 +40,17 @@ h1 { color:#059669; margin-top:15px; }
 .field { display:flex; flex-direction:column; }
 label { font-size:13px; font-weight:600; margin-bottom:6px; }
 
-input, select { padding:14px; border-radius:10px; border:1px solid #d1d5db; outline:none; }
-input:focus, select:focus { border-color:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,0.2); }
+input, select { 
+  padding:14px; border-radius:10px; border:1px solid #d1d5db; outline:none; 
+}
+input:focus, select:focus { 
+  border-color:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,0.2); 
+}
 
-button { margin-top:25px; width:100%; padding:15px; background:#10b981; color:white; border:none; border-radius:10px; font-size:16px; cursor:pointer; }
+button { 
+  margin-top:25px; width:100%; padding:15px; background:#10b981; color:white; 
+  border:none; border-radius:10px; font-size:16px; cursor:pointer; 
+}
 button:hover { background:#059669; }
 button:disabled { background:#9ca3af; cursor:not-allowed; }
 
@@ -34,104 +59,185 @@ button:disabled { background:#9ca3af; cursor:not-allowed; }
 
 #status { margin-top:15px; text-align:center; font-weight:bold; }
 
-.spinner { display:none; width:50px; height:50px; border:5px solid #f3f3f3; border-top:5px solid #10b981; border-radius:50%; animation:spin 1s linear infinite; margin:20px auto; }
+/* Spinner */
+.spinner { 
+  display:none; width:50px; height:50px; border:5px solid #f3f3f3; 
+  border-top:5px solid #10b981; border-radius:50%; animation:spin 1s linear infinite; 
+  margin:20px auto; 
+}
 @keyframes spin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
 
-.mpesa-logo { width:90px; height:90px; margin:15px auto; display:block; }
+.mpesa-logo { width:100px; height:100px; margin:20px auto; display:block; }
+
+/* Beautiful Success Modal */
+.success-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.success-content {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 420px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  animation: popUp 0.4s ease;
+}
+
+@keyframes popUp {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.success-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.success-content h2 {
+  color: #10b981;
+  margin: 10px 0 15px;
+}
+
+.success-content p {
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.close-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: #059669;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-<div id="formScreen" class="screen active">
-  <div class="header">
-    <div class="icon">👤</div>
-    <h1>Application Form</h1>
-    <div class="sub">Fill all required fields. We only contact 0780003131</div>
-  </div>
-
-  <form id="form">
-    <!-- Your form fields remain the same -->
-    <div class="section">
-      <h3>Personal Information</h3>
-      <div class="grid">
-        <div class="field"><label>Full Names *</label><input name="Full Names" required></div>
-        <div class="field"><label>Phone Number *</label><input name="Phone Number" required></div>
-        <div class="field"><label>Active Email *</label><input type="email" name="Active Email" required></div>
-      </div>
+  <!-- FORM SCREEN -->
+  <div id="formScreen" class="screen active">
+    <div class="header">
+      <div class="icon">👤</div>
+      <h1>KRA Application Form</h1>
+      <div class="sub">Fill all required fields. We only contact you on 0780003131</div>
     </div>
 
-    <div class="section">
-      <h3>Personal Details</h3>
-      <div class="grid">
-        <div class="field"><label>Date of Birth *</label><input type="date" name="Date of Birth" required></div>
-        <div class="field"><label>ID Number *</label><input name="ID Number" required></div>
-        <div class="field"><label>Preferred Delivery *</label>
-          <select name="Preferred Delivery Method" required>
-            <option value="">Select</option>
-            <option>WhatsApp</option>
-            <option>Email</option>
-          </select>
+    <form id="form">
+      <div class="section">
+        <h3>Personal Information</h3>
+        <div class="grid">
+          <div class="field"><label>Full Names *</label><input name="Full Names" required></div>
+          <div class="field"><label>Phone Number *</label><input name="Phone Number" required></div>
+          <div class="field"><label>Active Email *</label><input type="email" name="Active Email" required></div>
         </div>
       </div>
-    </div>
 
-    <div class="section">
-      <h3>Location Details</h3>
-      <div class="grid">
-        <div class="field"><label>County *</label><input name="County" required></div>
-        <div class="field"><label>District *</label><input name="District" required></div>
-        <div class="field"><label>Division *</label><input name="Division" required></div>
-        <div class="field"><label>Town *</label><input name="Town" required></div>
-        <div class="field"><label>P.O. Box *</label><input name="P.O. Box" required></div>
+      <div class="section">
+        <h3>Personal Details</h3>
+        <div class="grid">
+          <div class="field"><label>Date of Birth *</label><input type="date" name="Date of Birth" required></div>
+          <div class="field"><label>ID Number *</label><input name="ID Number" required></div>
+          <div class="field"><label>Preferred Delivery *</label>
+            <select name="Preferred Delivery Method" required>
+              <option value="">Select</option>
+              <option>WhatsApp</option>
+              <option>Email</option>
+            </select>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="consent">
-      <label class="checkbox-wrapper">
-        <input type="checkbox" id="consent" required>
-        <span>I agree to the <a href="#" target="_blank">Privacy Policy</a>.</span>
-      </label>
-    </div>
+      <div class="section">
+        <h3>Location Details</h3>
+        <div class="grid">
+          <div class="field"><label>County *</label><input name="County" required></div>
+          <div class="field"><label>District *</label><input name="District" required></div>
+          <div class="field"><label>Division *</label><input name="Division" required></div>
+          <div class="field"><label>Town *</label><input name="Town" required></div>
+          <div class="field"><label>P.O. Box *</label><input name="P.O. Box" required></div>
+        </div>
+      </div>
 
-    <button type="submit">Proceed to Payment</button>
-  </form>
-</div>
+      <div class="consent">
+        <label class="checkbox-wrapper">
+          <input type="checkbox" id="consent" required>
+          <span>
+I confirm that I have read, understood, and agree to the 
+<a href="https://www.onlinecyber.co.ke/data-protection" target="_blank">
+Data Protection & Privacy Policy
+</a> & I consent to the collection & processing of my personal information.
+</span>
+        </label>
+      </div>
 
-<div id="paymentScreen" class="screen">
-  <div class="header">
-    <div class="icon">💳</div>
-    <h1>Complete Payment</h1>
-    <div class="sub">Enter your M-PESA number</div>
+      <button type="submit">Proceed to Payment</button>
+    </form>
   </div>
 
-  <div class="field">
-    <label>M-PESA Number *</label>
-    <input id="mpesa" placeholder="07XXXXXXXX" maxlength="10">
+  <!-- PAYMENT SCREEN -->
+  <div id="paymentScreen" class="screen">
+    <div class="header">
+      <div class="icon">💳</div>
+      <h1>Complete Payment</h1>
+      <div class="sub">Enter your M-PESA number</div>
+    </div>
+
+    <div class="field">
+      <label>M-PESA Number *</label>
+      <input id="mpesa" placeholder="07XXXXXXXX" maxlength="10">
+    </div>
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg" 
+         class="mpesa-logo" alt="M-PESA">
+
+    <div id="spinner" class="spinner"></div>
+
+    <button id="payButton" onclick="payNow()">Pay Now - KES 200</button>
+
+    <div id="status"></div>
   </div>
 
-  <!-- Reliable M-PESA Logo -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg" 
-       class="mpesa-logo" alt="M-PESA">
-
-  <div id="spinner" class="spinner"></div>
-
-  <button id="payButton" onclick="payNow()">Pay Now - KES 1</button>
-
-  <div id="status"></div>
 </div>
 
+<!-- BEAUTIFUL SUCCESS MODAL -->
+<div id="successModal" class="success-modal">
+  <div class="success-content">
+    <div class="success-icon">✅</div>
+    <h2>Application Submitted Successfully!</h2>
+    <p>Your KRA PIN Registration has been received and is being processed.</p>
+    <p><strong>Please check your phone and enter PIN to complete the M-PESA payment of KES 200.</strong></p>
+    <p style="color:#10b981; font-weight:600;">You will be contacted once your application is fully processed.</p>
+    
+    <button class="close-btn" onclick="closeModal()">Submit Another Application</button>
+  </div>
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbwyKaMz5tNtyxZAuvs08g0V7abXHDANtqmHgjGG42bc_CC9NNDaxx3RDlD9vxTGhjKBaA/exec";
+// ====================== CONFIG ======================
+const scriptURL = "https://script.google.com/macros/s/AKfycbxukDLNV_aKGSdLaZVGhA6epqE8h7OLPNfCUQDMnJb6I7Lk49Ks3zIeiWJEyrDORF38hg/exec";
 
 let formDataStore = {};
 
-document.getElementById("form").addEventListener("submit", function(e){
+// FORM SUBMISSION
+document.getElementById("form").addEventListener("submit", function(e) {
   e.preventDefault();
-  if(!document.getElementById("consent").checked) {
+  if (!document.getElementById("consent").checked) {
     alert("Please agree to the privacy policy.");
     return;
   }
@@ -140,34 +246,40 @@ document.getElementById("form").addEventListener("submit", function(e){
   document.getElementById("paymentScreen").classList.add("active");
 });
 
-async function payNow(){
+// PAYMENT FUNCTION
+async function payNow() {
   const phoneInput = document.getElementById("mpesa").value.trim();
   const statusEl = document.getElementById("status");
   const spinner = document.getElementById("spinner");
   const payButton = document.getElementById("payButton");
 
-  if(!phoneInput) {
+  if (!phoneInput) {
     statusEl.innerText = "❌ Please enter M-PESA number";
     return;
   }
 
   let phone = phoneInput.replace(/\s+|\+|-/g, '');
-  if(phone.startsWith("07") && phone.length === 10){
+  if (phone.startsWith("07") && phone.length === 10) {
     phone = "254" + phone.substring(1);
   }
 
-  if(phone.length !== 12 || !phone.startsWith("254")){
-    statusEl.innerText = "❌ Invalid phone number";
+  if (phone.length !== 12 || !phone.startsWith("254")) {
+    statusEl.innerText = "❌ Invalid phone number. Use 07XXXXXXXX";
     return;
   }
 
   payButton.disabled = true;
   payButton.textContent = "Processing...";
   spinner.style.display = "block";
-  statusEl.innerText = "⏳ Sending STK Push...";
+  statusEl.innerText = "⏳ Sending M-PESA STK Push...";
 
   try {
-    const payload = { ...formDataStore, "Phone Number": phone, "M-PESA Number": phone, amount: "1" };
+    const payload = {
+      ...formDataStore,
+      "Phone Number": phone,
+      "M-PESA Number": phone,
+      amount: "1"
+    };
 
     const response = await fetch(scriptURL, {
       method: "POST",
@@ -177,23 +289,37 @@ async function payNow(){
 
     const text = await response.text();
     let result;
-    try { result = JSON.parse(text); } catch(e) { result = {status: "error", message: "Invalid response"}; }
-
-    if(result.status === "success"){
-      statusEl.innerHTML = `✅ STK Sent!<br>Check your phone and enter PIN.`;
-    } else {
-      statusEl.innerText = `❌ ${result.message || "Failed"}`;
+    try {
+      result = JSON.parse(text);
+    } catch(e) {
+      result = { status: "error", message: "Invalid response" };
     }
-  } catch(err) {
-    statusEl.innerText = "❌ Network error. Try again.";
+
+    if (result.status === "success") {
+      // Show Beautiful Modal
+      document.getElementById("successModal").style.display = "flex";
+    } else {
+      statusEl.innerText = `❌ ${result.message || "Failed to send STK"}`;
+    }
+
+  } catch (err) {
+    console.error(err);
+    statusEl.innerText = "❌ Network error. Please try again.";
   } finally {
     setTimeout(() => {
       spinner.style.display = "none";
       payButton.disabled = false;
-      payButton.textContent = "Pay Now - KES 1";
+      payButton.textContent = "Pay Now - KES 200";
     }, 6000);
   }
 }
+
+// Close Modal and Reset Form
+function closeModal() {
+  document.getElementById("successModal").style.display = "none";
+  location.reload();   // Refresh to start new application
+}
 </script>
+
 </body>
 </html>
