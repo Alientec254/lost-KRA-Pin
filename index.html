@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lost KRA Application</title>
+<title>Lost KRA Pin Application</title>
 
 <style>
 body { 
@@ -21,6 +21,7 @@ body {
   box-shadow:0 8px 30px rgba(0,0,0,0.08); 
   border-top:5px solid #10b981; 
 }
+
 .header { text-align:center; margin-bottom:30px; }
 .icon { 
   width:65px; height:65px; background:#10b981; border-radius:50%; 
@@ -44,12 +45,15 @@ button {
   margin-top:25px; width:100%; padding:15px; background:#10b981; color:white; 
   border:none; border-radius:10px; font-size:16px; cursor:pointer; 
 }
+button:hover { background:#059669; }
+button:disabled { background:#9ca3af; }
 
 .screen { display:none; }
 .active { display:block; }
 
 #status { margin-top:15px; text-align:center; font-weight:bold; }
 
+/* Spinner */
 .spinner { 
   display:none; width:50px; height:50px; border:5px solid #f3f3f3; 
   border-top:5px solid #10b981; border-radius:50%; animation:spin 1s linear infinite; 
@@ -57,10 +61,12 @@ button {
 }
 @keyframes spin { 100% { transform:rotate(360deg); } }
 
+.mpesa-logo { width:100px; margin:20px auto; display:block; }
+
 /* Consent */
 .consent { margin-top:20px; }
 .checkbox-wrapper{
-  display:flex; gap:10px; font-size:14px; color:#374151; line-height:1.5;
+  display:flex; gap:10px; font-size:14px; color:#374151;
 }
 .checkbox-wrapper input{
   width:18px; height:18px; accent-color:#10b981;
@@ -69,7 +75,7 @@ button {
   color:#10b981; text-decoration:none; font-weight:600;
 }
 
-/* Modal */
+/* Success Modal */
 .success-modal {
   position: fixed;
   top:0; left:0; width:100%; height:100%;
@@ -78,11 +84,13 @@ button {
   align-items:center;
   justify-content:center;
 }
+
 .success-content {
   background:white;
-  padding:30px;
+  padding:40px;
   border-radius:20px;
   text-align:center;
+  max-width:420px;
 }
 </style>
 </head>
@@ -95,8 +103,8 @@ button {
 <div id="formScreen" class="screen active">
   <div class="header">
     <div class="icon">👤</div>
-    <h1>Lost KRA Application</h1>
-    <div class="sub">Fill all required fields. We only contact 0780003131</div>
+    <h1>Lost KRA Pin Application</h1>
+    <div class="sub">Fill required details</div>
   </div>
 
   <form id="form">
@@ -126,7 +134,7 @@ button {
       </div>
     </div>
 
-    <!-- ✅ CONSENT ADDED BACK -->
+    <!-- CONSENT -->
     <div class="consent">
       <label class="checkbox-wrapper">
         <input type="checkbox" id="consent" required>
@@ -134,7 +142,7 @@ button {
           I confirm that I have read, understood, and agree to the 
           <a href="https://www.onlinecyber.co.ke/data-protection" target="_blank">
             Data Protection & Privacy Policy
-          </a> and consent to the collection and processing of my personal information.
+          </a> and consent to the processing of my data.
         </span>
       </label>
     </div>
@@ -143,32 +151,38 @@ button {
   </form>
 </div>
 
-<!-- PAYMENT -->
+<!-- PAYMENT (RESTORED ORIGINAL DESIGN) -->
 <div id="paymentScreen" class="screen">
+
   <div class="header">
     <div class="icon">💳</div>
-    <h1>Payment</h1>
+    <h1>Complete Payment</h1>
+    <div class="sub">Enter your M-PESA number</div>
   </div>
 
   <div class="field">
     <label>M-PESA Number *</label>
-    <input id="mpesa" placeholder="07XXXXXXXX">
+    <input id="mpesa" placeholder="07XXXXXXXX" maxlength="10">
   </div>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg" 
+       class="mpesa-logo">
 
   <div id="spinner" class="spinner"></div>
 
-  <button onclick="payNow()">Pay Now</button>
+  <button id="payButton" onclick="payNow()">Pay Now - KES 200</button>
 
   <div id="status"></div>
-</div>
 
 </div>
 
-<!-- SUCCESS -->
+</div>
+
+<!-- SUCCESS MODAL -->
 <div id="successModal" class="success-modal">
   <div class="success-content">
-    <h2>✅ Success</h2>
-    <p>Check your phone and enter M-PESA PIN</p>
+    <h2>✅ Application Submitted</h2>
+    <p>Check your phone and enter your M-PESA PIN.</p>
     <button onclick="location.reload()">Done</button>
   </div>
 </div>
@@ -178,12 +192,12 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbxukDLNV_aKGSdLaZVGhA
 
 let formDataStore = {};
 
-// FORM STEP
+// FORM
 document.getElementById("form").addEventListener("submit", function(e){
   e.preventDefault();
 
   if(!document.getElementById("consent").checked){
-    alert("Please agree to the Data Protection Policy.");
+    alert("Please agree to the policy.");
     return;
   }
 
@@ -199,6 +213,7 @@ async function payNow(){
   let phone = document.getElementById("mpesa").value.trim();
   const status = document.getElementById("status");
   const spinner = document.getElementById("spinner");
+  const btn = document.getElementById("payButton");
 
   if(!phone){
     status.innerText="Enter M-PESA number";
@@ -210,7 +225,8 @@ async function payNow(){
   }
 
   spinner.style.display="block";
-  status.innerText="Sending STK Push...";
+  btn.disabled = true;
+  status.innerText="⏳ Sending STK Push...";
 
   try{
 
@@ -232,14 +248,15 @@ async function payNow(){
     if(result.status==="success"){
       document.getElementById("successModal").style.display="flex";
     } else {
-      status.innerText="Failed: " + (result.message || "");
+      status.innerText="❌ " + (result.message || "Failed");
     }
 
   }catch(err){
-    status.innerText="Network error";
+    status.innerText="❌ Network error";
   }
 
   spinner.style.display="none";
+  btn.disabled = false;
 }
 </script>
 
